@@ -1,0 +1,57 @@
+swagger: "2.0"
+info:
+  description: "storage open api"
+  version: 1.0.0
+  title: Storage open api
+  license:
+    name: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+host: api.xres.lucfish.com
+basePath: /
+tags:
+  - name: credentials
+    description: credentials
+schemes:
+  - https
+paths:
+  /oss/credentials:
+    post:
+      tags:
+        - credentials
+      summary: 获取上传凭证 credentials
+      description: 获取上传凭证 credentials
+      operationId: create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/CreateUploadCredentialsReq"
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/APIResponse"
+definitions:
+  CreateUploadCredentialsReq:
+    type: object
+    properties:
+      channel:
+        type: string
+      extra:
+        type: object
+  CreateUploadCredentialsRsp:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      msg:
+        type: string
+      data:
+        type: object
