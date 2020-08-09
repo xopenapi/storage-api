@@ -1,4 +1,4 @@
-swagger: "2.0"
+openapi: "3.0.0"
 info:
   description: "storage open api"
   version: 1.0.0
@@ -6,13 +6,11 @@ info:
   license:
     name: Apache-2.0
     url: "https://www.apache.org/licenses/LICENSE-2.0.html"
-host: api.xres.lucfish.com
-basePath: /
+servers:
+  - url: 'https://api.xres.lucfish.com/'
 tags:
   - name: credentials
     description: credentials
-schemes:
-  - https
 paths:
   /oss/credentials:
     post:
@@ -21,42 +19,46 @@ paths:
       summary: 获取上传凭证 credentials
       description: 获取上传凭证 credentials
       operationId: create
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: authorization
-          in: header
-          description: an authorization header
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: ""
-          required: true
-          schema:
-            $ref: "#/definitions/CreateUploadCredentialsReq"
+      requestBody:
+        $ref: "#/components/requestBodies/CreateUploadCredentialsReq"
       responses:
         "200":
           description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateUploadCredentialsRsp"
+      security:
+        - Signature:
+            - 'write:credentials'
+            - 'write:credentials'
+
+components:
+  securitySchemes:
+    Signature:
+      type: http
+      scheme: signature
+  requestBodies:
+    CreateUploadCredentialsReq:
+      content:
+        application/json:
           schema:
-            $ref: "#/definitions/CreateUploadCredentialsRsp"
-definitions:
-  CreateUploadCredentialsReq:
-    type: object
-    properties:
-      channel:
-        type: string
-      extra:
-        type: object
-  CreateUploadCredentialsRsp:
-    type: object
-    properties:
-      code:
-        type: integer
-        format: int32
-      msg:
-        type: string
-      data:
-        type: object
+            $ref: '#/components/schemas/CreateUploadCredentialsReq'
+  schemas:
+    CreateUploadCredentialsReq:
+      type: object
+      properties:
+        channel:
+          type: string
+        extra:
+          type: object
+    CreateUploadCredentialsRsp:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        msg:
+          type: string
+        data:
+          type: object
