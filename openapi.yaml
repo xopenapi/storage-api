@@ -19,6 +19,10 @@ paths:
       summary: 获取上传凭证
       description: 获取上传凭证
       operationId: credentials
+      parameters:
+        - $ref: '#/components/parameters/AuthTimestamp'
+        - $ref: '#/components/parameters/AuthNoncestr'
+        - $ref: '#/components/parameters/AuthSignature'
       requestBody:
         content:
           application/json:
@@ -33,28 +37,31 @@ paths:
                 $ref: "#/components/schemas/CredentialsRsp"
 security:
   - ApiKey: []
-    Timestamp: []
-    Signature: []
-    Noncestr: []
 
 components:
+  parameters:
+    AuthTimestamp:
+      name: Timestamp
+      in: header
+      schema:
+        type: string
+
+    AuthNoncestr:
+      name: Noncestr
+      in: header
+      schema:
+        type: string
+
+    AuthSignature:
+      name: Signature
+      in: header
+      schema:
+        type: string
+
   securitySchemes:
     ApiKey:
-      type: apiKey
-      in: header
-      name: Authorization
-    Timestamp:
-      type: apiKey
-      in: header
-      name: Timestamp
-    Signature:
-      type: apiKey
-      in: header
-      name: Signature
-    Noncestr:
-      type: apiKey
-      in: header
-      name: Noncestr
+      type: http
+      scheme: bearer
 
   schemas:
     CredentialsReq:
@@ -67,8 +74,6 @@ components:
         params:
           type: object
           description: 计算凭证参数，具体数据结构与上传渠道对应
-          oneOf:
-            - $ref: "#/components/schemas/QCloudCredentialsParams"
       required:
         - channel
         - params
@@ -87,8 +92,6 @@ components:
         data:
           type: object
           description: 上传凭证数据
-          oneOf:
-            - $ref: "#/components/schemas/QCloudCredentialsData"
       required:
         - code
 
