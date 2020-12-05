@@ -40,8 +40,9 @@ security:
 components:
   securitySchemes:
     ApiKey:
-      type: http
-      scheme: bearer
+      type: apiKey
+      in: header
+      name: Authorization
     Timestamp:
       type: apiKey
       in: header
