@@ -19,10 +19,6 @@ paths:
       summary: 获取上传凭证
       description: 获取上传凭证
       operationId: credentials
-      parameters:
-        - $ref: '#/components/parameters/AuthTimestamp'
-        - $ref: '#/components/parameters/AuthNoncestr'
-        - $ref: '#/components/parameters/AuthSignature'
       requestBody:
         content:
           application/json:
@@ -39,25 +35,6 @@ security:
   - ApiKey: []
 
 components:
-  parameters:
-    AuthTimestamp:
-      name: Timestamp
-      in: header
-      schema:
-        type: string
-
-    AuthNoncestr:
-      name: Noncestr
-      in: header
-      schema:
-        type: string
-
-    AuthSignature:
-      name: Signature
-      in: header
-      schema:
-        type: string
-
   securitySchemes:
     ApiKey:
       type: http
